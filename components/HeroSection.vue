@@ -14,7 +14,7 @@
       join a community of fellow degens in turning regrets into rewards.
     </p>
     <button
-      class="bg-green-500 hover:bg-green-400 text-gray-900 font-bold px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
+      class="bg-green-500 hover:bg-green-400 text-gray-900 font-bold px-6 py-3 rounded-lg shadow-md transition-transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300"
       @click="connectWallet"
     >
       Connect Wallet & Claim Your Redemption

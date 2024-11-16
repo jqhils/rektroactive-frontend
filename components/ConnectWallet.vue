@@ -1,17 +1,19 @@
 <template>
   <div
     class="relative flex items-center p-2 rounded-full
-      bg-gray-700/50"
-    :class="{ 'bg-transparent': !isConnected,
+      "
+    :class="{ 'bg-gray-700/50': showAddress,
+      'bg-transparent': !isConnected,
       'hover:cursor-pointer': isConnected,
-      'hover:bg-gray-700': isConnected }"
+      'hover:bg-gray-700': isConnected && showAddress }"
   >
     <template v-if="isConnected">
       <div @click="toggleDropdown" class="flex items-center p-1 rounded-md">
         <img 
           :src="avatarUrl" 
           alt="Avatar" 
-          class="w-8 h-8 rounded-full mr-2 cursor-pointer" 
+          class="w-8 h-8 rounded-full mr-2 cursor-pointer"
+          :class="{'w-10 h-10': !showAddress}"
         >
         <p v-if="showAddress" class="text-green-400 font-mono mr-4 select-none">{{ truncatedAddress }}</p>
       </div>
@@ -55,7 +57,8 @@ const isClient = typeof window !== 'undefined';
 const { isConnected, wallet, disconnect } = useVueDapp();
 const modal = useVueDappModal();
 
-const avatarUrl = 'https://via.placeholder.com/32'; // Replace with actual avatar URL or logic to generate avatar
+// const avatarUrl = 'https://via.placeholder.com/32'; // Replace with actual avatar URL or logic to generate avatar
+const avatarUrl =  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREN0R4LJ18m-J4oqFJNQxJgHR2xiLnSco1OdovghDTryarRhnoQFrMZSdnBa2XoB8TdZs&usqp=CAU'
 
 const truncatedAddress = computed(() => {
   if (wallet.address) {
@@ -128,16 +131,12 @@ const fetchBalance = async () => {
 // Watch for wallet connection and fetch balance
 onMounted(() => {
   if (isConnected.value) {
-    console.log('Fetching balance...');
     fetchBalance();
-    console.log('Balance fetched:', balance.value);
   }
 });
 
 watchEffect(() => {
   if (isConnected.value) {
-    console.log('Fetching balance...');
-    console.log('Balance fetched:', balance.value);
     fetchBalance();
   }
 });
