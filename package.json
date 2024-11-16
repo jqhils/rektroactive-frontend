@@ -17,6 +17,7 @@
     "@vue-dapp/modal": "^1.5.1",
     "@vue-dapp/nuxt": "^1.5.1",
     "@vue-dapp/walletconnect": "^1.5.1",
+    "ethers": "^6.13.4",
     "nuxt": "^3.14.159",
     "pinia": "^2.2.6",
     "vue": "latest",

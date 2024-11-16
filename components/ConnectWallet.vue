@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative flex items-center p-2 rounded-full shadow-lg
+    class="relative flex items-center p-2 rounded-full
       bg-gray-700/50"
     :class="{ 'bg-transparent': !isConnected,
       'hover:cursor-pointer': isConnected,
@@ -18,18 +18,10 @@
       <div 
         v-if="showDropdown" 
         @mouseleave="hideDropdown" 
-        class="absolute top-12 right-0 bg-gray-800 text-white p-4 mt-4 rounded-lg shadow-lg z-10"
+        class="absolute top-12 z-[9999] right-0 bg-gray-800 text-white p-4 mt-4 rounded-lg shadow-lg z-10"
       >
         <p class="mb-2">Account: {{ wallet.address }}</p>
-        <p class="mb-2">Balance: {{ wallet.balance }}</p>
-        <div>status: {{ wallet.status }}</div>
-        <div>isConnected: {{ isConnected }}</div>
-        <div>error: {{ wallet.error }}</div>
-
-        <div v-if="isConnected">
-          <div>chainId: {{ wallet.chainId }}</div>
-          <div>address: {{ wallet.address }}</div>
-        </div>
+        <p class="mb-2">Balance: {{ parseFloat(wallet.balance || balance).toFixed(4) }} ETH</p>
         <button 
           @click="disconnect" 
           class="bg-red-500 hover:bg-red-400 text-white font-bold px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
@@ -50,11 +42,15 @@
   </div>
 </template>
 
+
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watchEffect } from 'vue';
+import { ethers } from 'ethers'; // Ethers.js v6 import
 import { useVueDapp } from '@vue-dapp/core';
 import { VueDappModal, useVueDappModal } from '@vue-dapp/modal';
 import '@vue-dapp/modal/dist/style.css';
+
+const isClient = typeof window !== 'undefined';
 
 const { isConnected, wallet, disconnect } = useVueDapp();
 const modal = useVueDappModal();
@@ -68,10 +64,10 @@ const truncatedAddress = computed(() => {
   return '';
 });
 
-const screenWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 0);
+const screenWidth = ref(isClient ? window.innerWidth : 0);
 
 const updateScreenWidth = () => {
-  if (typeof window !== 'undefined') {
+  if (isClient) {
     screenWidth.value = window.innerWidth;
   }
 };
@@ -89,14 +85,13 @@ const hideDropdown = () => {
 };
 
 onMounted(() => {
-  if (typeof window !== 'undefined') {
+  if (isClient) {
     window.addEventListener('resize', updateScreenWidth);
   }
-  console.log(wallet);
 });
 
 onUnmounted(() => {
-  if (typeof window !== 'undefined') {
+  if (isClient) {
     window.removeEventListener('resize', updateScreenWidth);
   }
 });
@@ -106,10 +101,50 @@ function onClickConnectButton() {
     disconnect();
   } else {
     modal.open();
-    hideDropdown();
   }
 }
+
+// Create a separate reactive state for the balance
+const balance = ref(null);
+
+// Fetch balance using ethers.js v6
+const fetchBalance = async () => {
+  try {
+    if (isConnected.value && wallet.address && wallet.provider) {
+      // Use BrowserProvider in ethers v6
+      const ethersProvider = new ethers.BrowserProvider(wallet.provider.ethereum || wallet.provider);
+
+      // Fetch the balance (BigInt by default in ethers v6)
+      const walletBalance = await ethersProvider.getBalance(wallet.address);
+
+      // Format balance to Ether and store in reactive state
+      balance.value = ethers.formatEther(walletBalance); // Use ethers.formatEther directly
+    }
+  } catch (error) {
+    console.error("Error fetching wallet balance:", error);
+  }
+};
+
+// Watch for wallet connection and fetch balance
+onMounted(() => {
+  if (isConnected.value) {
+    console.log('Fetching balance...');
+    fetchBalance();
+    console.log('Balance fetched:', balance.value);
+  }
+});
+
+watchEffect(() => {
+  if (isConnected.value) {
+    console.log('Fetching balance...');
+    console.log('Balance fetched:', balance.value);
+    fetchBalance();
+  }
+});
 </script>
+
+
+
 
 <style scoped>
 /* Additional styles can be added here if needed */

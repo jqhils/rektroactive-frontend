@@ -3,7 +3,7 @@
     <header class="p-4 text-green-400 flex justify-between items-center">
       <h1 class="text-2xl font-bold">Rektroactive</h1>
       <div ref="walletContainer" class="relative">
-        <ConnectWallet />
+        <ConnectWallet class="absolute" />
       </div>
     </header>
     <main>
