@@ -18,10 +18,18 @@
       <div 
         v-if="showDropdown" 
         @mouseleave="hideDropdown" 
-        class="absolute top-12 right-0 bg-gray-800 text-white p-4 rounded-lg shadow-lg z-10"
+        class="absolute top-12 right-0 bg-gray-800 text-white p-4 mt-4 rounded-lg shadow-lg z-10"
       >
         <p class="mb-2">Account: {{ wallet.address }}</p>
         <p class="mb-2">Balance: {{ wallet.balance }}</p>
+        <div>status: {{ wallet.status }}</div>
+        <div>isConnected: {{ isConnected }}</div>
+        <div>error: {{ wallet.error }}</div>
+
+        <div v-if="isConnected">
+          <div>chainId: {{ wallet.chainId }}</div>
+          <div>address: {{ wallet.address }}</div>
+        </div>
         <button 
           @click="disconnect" 
           class="bg-red-500 hover:bg-red-400 text-white font-bold px-4 py-2 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
@@ -84,6 +92,7 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('resize', updateScreenWidth);
   }
+  console.log(wallet);
 });
 
 onUnmounted(() => {

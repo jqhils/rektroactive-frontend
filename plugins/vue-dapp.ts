@@ -22,7 +22,7 @@ export default defineNuxtPlugin(() => {
     }),
     new CoinbaseWalletConnector({
       appName: 'Vue Dapp',
-      jsonRpcUrl: 'https://ethereum-rpc.publicnode.com', // Replace with your preferred RPC URL
+      jsonRpcUrl: 'https://sepolia.optimism.io', // Replace with your preferred RPC URL
     }),
   ])
 })
