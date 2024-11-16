@@ -1,5 +1,5 @@
 <template>
-  <div class="hero bg-gray-900 p-10 rounded-lg shadow-lg text-center text-gray-300">
+  <div class="hero p-10 rounded-lg shadow-lg text-center text-gray-300">
     <div class="illustration mx-auto mb-6">
       <img
         src="~/assets/img/crypto-machine.webp"
