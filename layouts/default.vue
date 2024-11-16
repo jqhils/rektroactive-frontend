@@ -15,9 +15,8 @@
         </button>
         <div v-if="menuOpen" @mouseleave="closeMenu" class="absolute right-0 mt-2 w-48 bg-gray-800 text-white rounded-lg shadow-lg z-50">
           <NuxtLink to="/" class="block px-4 py-2 hover:bg-gray-700">Home</NuxtLink>
+          <NuxtLink to="/lotteries" class="block px-4 py-2 hover:bg-gray-700">Lotteries</NuxtLink>
           <NuxtLink to="/profile" class="block px-4 py-2 hover:bg-gray-700">Profile</NuxtLink>
-          <NuxtLink to="/about" class="block px-4 py-2 hover:bg-gray-700">About</NuxtLink>
-          <NuxtLink to="/contact" class="block px-4 py-2 hover:bg-gray-700">Contact</NuxtLink>
         </div>
       </div>
       <div ref="walletContainer" class="relative">

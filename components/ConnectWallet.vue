@@ -10,7 +10,7 @@
     <template v-if="isConnected">
       <div @click="toggleDropdown" class="flex items-center p-1 rounded-md">
         <img 
-          :src="avatarUrl" 
+          src="~/assets/img/avatar.jpeg"
           alt="Avatar" 
           class="w-8 h-8 rounded-full mr-2 cursor-pointer"
           :class="{'w-10 h-10': !showAddress}"
@@ -58,7 +58,7 @@ const { isConnected, wallet, disconnect } = useVueDapp();
 const modal = useVueDappModal();
 
 // const avatarUrl = 'https://via.placeholder.com/32'; // Replace with actual avatar URL or logic to generate avatar
-const avatarUrl =  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREN0R4LJ18m-J4oqFJNQxJgHR2xiLnSco1OdovghDTryarRhnoQFrMZSdnBa2XoB8TdZs&usqp=CAU'
+const avatarUrl =  '~/assets/img/avatar.jpeg'
 
 const truncatedAddress = computed(() => {
   if (wallet.address) {

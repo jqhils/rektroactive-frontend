@@ -9,8 +9,8 @@
     </div>
     <h2 class="text-4xl font-bold text-green-400 mb-3">A Second Chance at Memecoin Glory</h2>
     <p class="text-lg mb-6">
-      Fumbled your bag? Sold your memecoins too early? Don’t let your story end there. 
-      Rektroactive gives you a chance to redeem your past plays, recoup your pride, and 
+      Fumbled your bag? Sold your memecoins too early?
+      Rektroactive gives you a chance at redemption, to recoup your pride, and 
       join a community of fellow degens in turning regrets into rewards.
     </p>
     <button
