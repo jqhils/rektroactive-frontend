@@ -12,6 +12,7 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.7.0",
+    "@vlayer/sdk": "^0.1.0-nightly-20241115-70dfc11",
     "@vue-dapp/coinbase": "^1.5.1",
     "@vue-dapp/core": "^1.5.1",
     "@vue-dapp/modal": "^1.5.1",

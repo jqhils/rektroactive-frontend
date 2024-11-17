@@ -1,11 +1,12 @@
 <template>
   <div
-    class="relative flex items-center p-2 rounded-full
-      "
-    :class="{ 'bg-gray-700/50': showAddress,
+    class="relative flex items-center p-2 rounded-full"
+    :class="{
+      'bg-gray-700/50': isConnected && showAddress,
       'bg-transparent': !isConnected,
       'hover:cursor-pointer': isConnected,
-      'hover:bg-gray-700': isConnected && showAddress }"
+      'hover:bg-gray-700': isConnected && showAddress
+    }"
   >
     <template v-if="isConnected">
       <div @click="toggleDropdown" class="flex items-center p-1 rounded-md">
@@ -20,7 +21,7 @@
       <div 
         v-if="showDropdown" 
         @mouseleave="hideDropdown" 
-        class="absolute top-12 z-[9999] right-0 bg-gray-800 text-white p-4 mt-4 rounded-lg shadow-lg z-10"
+        class="absolute top-12 z-[9999] right-0 bg-gray-800 text-white border border-gray-700 p-4 mt-4 rounded-lg shadow-lg z-10"
       >
         <p class="mb-2">Account: {{ wallet.address }}</p>
         <p class="mb-2">Balance: {{ parseFloat(wallet.balance || balance).toFixed(4) }} ETH</p>
@@ -44,7 +45,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watchEffect } from 'vue';
 import { ethers } from 'ethers'; // Ethers.js v6 import
@@ -57,8 +57,7 @@ const isClient = typeof window !== 'undefined';
 const { isConnected, wallet, disconnect } = useVueDapp();
 const modal = useVueDappModal();
 
-// const avatarUrl = 'https://via.placeholder.com/32'; // Replace with actual avatar URL or logic to generate avatar
-const avatarUrl =  '~/assets/img/avatar.jpeg'
+const avatarUrl = '~/assets/img/avatar.jpeg';
 
 const truncatedAddress = computed(() => {
   if (wallet.address) {
@@ -129,21 +128,12 @@ const fetchBalance = async () => {
 };
 
 // Watch for wallet connection and fetch balance
-onMounted(() => {
-  if (isConnected.value) {
-    fetchBalance();
-  }
-});
-
 watchEffect(() => {
   if (isConnected.value) {
     fetchBalance();
   }
 });
 </script>
-
-
-
 
 <style scoped>
 /* Additional styles can be added here if needed */

@@ -1,13 +1,13 @@
 <template>
-  <section class="profile p-10 rounded-lg shadow-lg text-left text-gray-300">
-    <h2 class="text-4xl font-bold text-green-400 mb-5">Profile</h2>
+  <section class="profile p-6 rounded-lg border border-gray-700 text-left text-gray-300 shadow-lg text-left text-gray-300">
+    <h2 class="text-3xl font-bold text-green-400 mb-5">Profile</h2>
     <div class="wallet-info mb-8">
       <h3 class="text-2xl font-semibold text-gray-100">Wallet Information</h3>
       <p class="mt-2"><strong>Address:</strong> {{ truncatedAddress }}</p>
       <p class="mt-2"><strong>Balance:</strong> {{ balance }} ETH</p>
     </div>
     <div class="degenerate-facts space-y-8">
-      <h3 class="text-2xl font-semibold text-gray-100">Degenerate Facts</h3>
+      <h3 class="text-2xl font-semibold text-gray-100">Biggest Fumbles</h3>
       <div class="fact">
         <p><strong>Biggest Loss:</strong> {{ biggestLoss }} ETH on {{ biggestLossCoin }}</p>
       </div>

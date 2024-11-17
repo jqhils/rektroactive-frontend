@@ -39,7 +39,7 @@
         <div class="pt-4 px-4">
           <button
             type="submit"
-            :disabled="userOwnedAmount <= 0"
+            :disabled="userOwnedAmount <= 0 || !isConnected"
             class="w-full bg-green-500 hover:bg-green-400 
             text-white font-bold px-4 py-2 rounded-md 
             transition-transform transform hover:scale-105 
@@ -57,6 +57,20 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useVueDapp } from '@vue-dapp/core';
+import { createVlayerClient } from '@vlayer/sdk'
+ 
+import { foundry } from 'viem/chains'
+// import { proverAbi } from './proverAbi'
+const proverAbi = [{"type":"constructor","inputs":[{"name":"_token","type":"address","internalType":"contract IERC20"},{"name":"_blockNo","type":"uint256","internalType":"uint256"}],"stateMutability":"nonpayable"},{"type":"function","name":"historicalBalanceOf","inputs":[{"name":"_owner","type":"address","internalType":"address"}],"outputs":[{"name":"","type":"tuple","internalType":"struct Proof","components":[{"name":"seal","type":"tuple","internalType":"struct Seal","components":[{"name":"verifierSelector","type":"bytes4","internalType":"bytes4"},{"name":"seal","type":"bytes32[8]","internalType":"bytes32[8]"},{"name":"mode","type":"uint8","internalType":"enum ProofMode"}]},{"name":"callGuestId","type":"bytes32","internalType":"bytes32"},{"name":"length","type":"uint256","internalType":"uint256"},{"name":"callAssumptions","type":"tuple","internalType":"struct CallAssumptions","components":[{"name":"proverContractAddress","type":"address","internalType":"address"},{"name":"functionSelector","type":"bytes4","internalType":"bytes4"},{"name":"settleBlockNumber","type":"uint256","internalType":"uint256"},{"name":"settleBlockHash","type":"bytes32","internalType":"bytes32"}]}]},{"name":"","type":"address","internalType":"address"},{"name":"","type":"uint256","internalType":"uint256"}],"stateMutability":"nonpayable"},{"type":"function","name":"proof","inputs":[],"outputs":[{"name":"","type":"tuple","internalType":"struct Proof","components":[{"name":"seal","type":"tuple","internalType":"struct Seal","components":[{"name":"verifierSelector","type":"bytes4","internalType":"bytes4"},{"name":"seal","type":"bytes32[8]","internalType":"bytes32[8]"},{"name":"mode","type":"uint8","internalType":"enum ProofMode"}]},{"name":"callGuestId","type":"bytes32","internalType":"bytes32"},{"name":"length","type":"uint256","internalType":"uint256"},{"name":"callAssumptions","type":"tuple","internalType":"struct CallAssumptions","components":[{"name":"proverContractAddress","type":"address","internalType":"address"},{"name":"functionSelector","type":"bytes4","internalType":"bytes4"},{"name":"settleBlockNumber","type":"uint256","internalType":"uint256"},{"name":"settleBlockHash","type":"bytes32","internalType":"bytes32"}]}]}],"stateMutability":"pure"},{"type":"function","name":"setBlock","inputs":[{"name":"blockNo","type":"uint256","internalType":"uint256"}],"outputs":[],"stateMutability":"nonpayable"},{"type":"function","name":"setChain","inputs":[{"name":"chainId","type":"uint256","internalType":"uint256"},{"name":"blockNo","type":"uint256","internalType":"uint256"}],"outputs":[],"stateMutability":"nonpayable"}]
+
+const vlayer = createVlayerClient();
+// const vlayer = createVlayerClient({
+//   proverUrl: 'http://localhost:3000',
+// })
+
+
+const { isConnected } = useVueDapp();
 
 const lotteries = ref([
   { id: 1, ticker: 'PEPE', currentShares: 13000000, lastRegistrationDate: '2023-12-01T12:00:00Z', prizePool: 69420000, blockHeight: 15000000 },
@@ -87,7 +101,19 @@ const selectLottery = (lottery) => {
   userOwnedAmount.value = lottery.id === 2 ? 100 : 0; // Example: 100 for SHIB, 0 for others
 };
 
-const participateInLottery = () => {
+const participateInLottery =async  () => {
+  const hash = await vlayer.prove({
+    address: '0xB0e269cdC963570cb90fFFB72a28940Ad2Ec33E9',
+    proverAbi,
+    functionName: 'historicalBalanceOf',
+    args: ['0x1c94958a67620B83DD08edaD8eA7A8cb75c6e971', 20000813],
+    chainId: foundry,
+  })
+
+  const result = await vlayer.waitForProvingResult(hash);
+
+
+  
   if (selectedLottery.value) {
     alert(`Entered ${participationAmount.value} ETH into ${selectedLottery.value.ticker}`);
     participationAmount.value = '';
